@@ -1,46 +1,39 @@
 const songs = [
     {
         title: "Song 1",
-        file: "songs/song1.mp3"
+        file: "song1.mp3"
     },
     {
         title: "Song 2",
-        file: "songs/song2.mp3"
+        file: "song2.mp3"
+    },
+    {
+        title: "Song 3",
+        file: "song3.mp3"
     }
 ];
 
 let currentSong = 0;
 
 const audio = document.getElementById("audio");
-const playBtn = document.getElementById("play");
-const nextBtn = document.getElementById("next");
-const prevBtn = document.getElementById("prev");
 const title = document.getElementById("song-title");
 const progress = document.getElementById("progress");
-const volume = document.getElementById("volume");
 
 function loadSong(index){
     audio.src = songs[index].file;
     title.innerText = songs[index].title;
 }
 
-loadSong(currentSong);
-
-playBtn.addEventListener("click", () => {
-
+function playPause(){
     if(audio.paused){
         audio.play();
-        playBtn.innerText = "⏸";
     }
     else{
         audio.pause();
-        playBtn.innerText = "▶";
     }
+}
 
-});
-
-nextBtn.addEventListener("click", () => {
-
+function nextSong(){
     currentSong++;
 
     if(currentSong >= songs.length){
@@ -49,11 +42,9 @@ nextBtn.addEventListener("click", () => {
 
     loadSong(currentSong);
     audio.play();
+}
 
-});
-
-prevBtn.addEventListener("click", () => {
-
+function prevSong(){
     currentSong--;
 
     if(currentSong < 0){
@@ -62,23 +53,18 @@ prevBtn.addEventListener("click", () => {
 
     loadSong(currentSong);
     audio.play();
-
-});
+}
 
 audio.addEventListener("timeupdate", () => {
 
-    progress.value = (audio.currentTime / audio.duration) * 100;
-
+    progress.value =
+        (audio.currentTime / audio.duration) * 100 || 0;
 });
 
 progress.addEventListener("input", () => {
 
-    audio.currentTime = (progress.value / 100) * audio.duration;
-
+    audio.currentTime =
+        (progress.value / 100) * audio.duration;
 });
 
-volume.addEventListener("input", () => {
-
-    audio.volume = volume.value;
-
-});
+loadSong(currentSong);
